@@ -1,8 +1,8 @@
 package com.api.pathwise.service;
 
-import com.api.pathwise.dto.CreateFlowRequest;
-import com.api.pathwise.dto.FlowResponse;
-import com.api.pathwise.dto.UpdateFlowRequest;
+import com.api.pathwise.dto.flows.CreateFlowRequest;
+import com.api.pathwise.dto.flows.FlowResponse;
+import com.api.pathwise.dto.flows.UpdateFlowRequest;
 import com.api.pathwise.entity.Flow;
 import com.api.pathwise.exception.ResourceNotFoundException;
 import com.api.pathwise.mapper.FlowMapper;

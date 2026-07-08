@@ -1,4 +1,4 @@
-package com.api.pathwise.dto;
+package com.api.pathwise.dto.flows;
 
 import lombok.Builder;
 import lombok.Data;

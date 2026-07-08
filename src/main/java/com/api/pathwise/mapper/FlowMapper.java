@@ -1,6 +1,6 @@
 package com.api.pathwise.mapper;
 
-import com.api.pathwise.dto.FlowResponse;
+import com.api.pathwise.dto.flows.FlowResponse;
 import com.api.pathwise.entity.Flow;
 import org.springframework.stereotype.Component;
 

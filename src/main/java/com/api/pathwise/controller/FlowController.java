@@ -1,9 +1,9 @@
 package com.api.pathwise.controller;
 
 import com.api.pathwise.dto.ApiResponse;
-import com.api.pathwise.dto.CreateFlowRequest;
-import com.api.pathwise.dto.FlowResponse;
-import com.api.pathwise.dto.UpdateFlowRequest;
+import com.api.pathwise.dto.flows.CreateFlowRequest;
+import com.api.pathwise.dto.flows.FlowResponse;
+import com.api.pathwise.dto.flows.UpdateFlowRequest;
 import com.api.pathwise.service.FlowService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
