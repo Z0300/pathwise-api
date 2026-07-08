@@ -1,0 +1,77 @@
+package com.api.pathwise.controller;
+
+import com.api.pathwise.dto.ApiResponse;
+import com.api.pathwise.dto.CreateFlowRequest;
+import com.api.pathwise.dto.FlowResponse;
+import com.api.pathwise.dto.UpdateFlowRequest;
+import com.api.pathwise.service.FlowService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/flows")
+@RequiredArgsConstructor
+public class FlowController {
+
+    private final FlowService flowService;
+
+    @GetMapping
+    public ResponseEntity<ApiResponse.Success<List<FlowResponse>>> getAll(
+           @RequestParam(required = false) String searchTerm,
+           Pageable pageable) {
+
+        Page<FlowResponse> page = flowService.getAll(searchTerm, pageable);
+
+        return ResponseEntity.ok(ApiResponse.Success.<List<FlowResponse>>builder()
+                .data(page.getContent())
+                .meta(ApiResponse.Meta.builder()
+                        .page(page.getNumber())
+                        .size(page.getSize())
+                        .totalElements(page.getTotalElements())
+                        .totalPages(page.getTotalPages())
+                        .build())
+                .build());
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse.Success<FlowResponse>> getById(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.Success.<FlowResponse>builder()
+                .data(flowService.getById(id))
+                .build());
+    }
+
+
+    @PostMapping
+    public ResponseEntity<ApiResponse.Success<FlowResponse>> create(
+            @Valid @RequestBody CreateFlowRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.Success.<FlowResponse>builder()
+                        .message("created")
+                        .data(flowService.create(request))
+                        .build());
+    }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse.Success<FlowResponse>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateFlowRequest request) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                ApiResponse.Success.<FlowResponse>builder()
+                        .message("updated")
+                        .data(flowService.update(id, request))
+                        .build());
+    }
+
+
+
+}

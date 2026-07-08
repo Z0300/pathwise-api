@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: YOUR CONNECTION STRING HERE
+    username: USERNAME eg: (root)
+    password: PASSWORD
+  jpa:
+    show-sql: true
