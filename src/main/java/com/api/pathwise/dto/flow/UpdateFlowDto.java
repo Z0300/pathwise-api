@@ -1,6 +1,7 @@
-package com.api.pathwise.dto.flows;
+package com.api.pathwise.dto.flow;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateFlowDto {
+public class UpdateFlowDto {
+
+    @NotNull
+    private Long id;
 
     @NotBlank(message = "Name is required")
-    @Size(min = 3, max = 255, message = "Name must be between 3 and 255 characters")
+    @Size(max = 255)
     private String name;
 
     private String description;

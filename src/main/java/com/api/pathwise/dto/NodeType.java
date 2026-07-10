@@ -1,4 +1,4 @@
-package com.api.pathwise.entity.enumeration;
+package com.api.pathwise.dto;
 
 public enum NodeType {
     start, end, action, decision

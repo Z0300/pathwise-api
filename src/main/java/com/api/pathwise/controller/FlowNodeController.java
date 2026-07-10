@@ -1,10 +1,10 @@
 package com.api.pathwise.controller;
 
 import com.api.pathwise.dto.ApiResponse;
-import com.api.pathwise.dto.flow.CreateFlowDto;
-import com.api.pathwise.dto.flow.FlowDto;
-import com.api.pathwise.dto.flow.UpdateFlowDto;
-import com.api.pathwise.service.FlowService;
+import com.api.pathwise.dto.flownode.CreateFlowNodeDto;
+import com.api.pathwise.dto.flownode.FlowNodeDto;
+import com.api.pathwise.dto.flownode.UpdateFlowNodeDto;
+import com.api.pathwise.service.FlowNodeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,20 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/flows")
+@RequestMapping("/api/v1/flow-nodes")
 @RequiredArgsConstructor
-public class FlowController {
+public class FlowNodeController {
 
-    private final FlowService flowService;
+    private final FlowNodeService flowNodeService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse.Success<List<FlowDto>>> getAll(
-           @RequestParam(required = false) String searchTerm,
-           Pageable pageable) {
+    public ResponseEntity<ApiResponse.Success<List<FlowNodeDto>>> getAll(
+            Pageable pageable) {
 
-        Page<FlowDto> page = flowService.getAll(searchTerm, pageable);
+        Page<FlowNodeDto> page = flowNodeService.getAll(pageable);
 
-        return ResponseEntity.ok(ApiResponse.Success.<List<FlowDto>>builder()
+        return ResponseEntity.ok(ApiResponse.Success.<List<FlowNodeDto>>builder()
                 .data(page.getContent())
                 .meta(ApiResponse.Meta.builder()
                         .page(page.getNumber())
@@ -42,36 +41,35 @@ public class FlowController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse.Success<FlowDto>> getById(
+    public ResponseEntity<ApiResponse.Success<FlowNodeDto>> getById(
             @PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.Success.<FlowDto>builder()
-                .data(flowService.getById(id))
+        return ResponseEntity.ok(ApiResponse.Success.<FlowNodeDto>builder()
+                .data(flowNodeService.getById(id))
                 .build());
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse.Success<FlowDto>> create(
-            @Valid @RequestBody CreateFlowDto request) {
+    public ResponseEntity<ApiResponse.Success<FlowNodeDto>> create(
+            @Valid @RequestBody CreateFlowNodeDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                ApiResponse.Success.<FlowDto>builder()
+                ApiResponse.Success.<FlowNodeDto>builder()
                         .message("created")
-                        .data(flowService.create(request))
+                        .data(flowNodeService.create(request))
                         .build());
     }
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse.Success<FlowDto>> update(
+    public ResponseEntity<ApiResponse.Success<FlowNodeDto>> update(
             @PathVariable Long id,
-            @Valid @RequestBody UpdateFlowDto request) {
+            @Valid @RequestBody UpdateFlowNodeDto request) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                ApiResponse.Success.<FlowDto>builder()
+                ApiResponse.Success.<FlowNodeDto>builder()
                         .message("updated")
-                        .data(flowService.update(id, request))
+                        .data(flowNodeService.update(id, request))
                         .build());
     }
-
 
 
 }
