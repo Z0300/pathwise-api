@@ -1,13 +1,13 @@
 package com.api.pathwise.mapper;
 
-import com.api.pathwise.dto.flows.FlowResponse;
+import com.api.pathwise.dto.flows.FlowDto;
 import com.api.pathwise.entity.Flow;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FlowMapper {
-    public FlowResponse toSimpleDto(Flow flow) {
-        return FlowResponse.builder()
+    public FlowDto toSimpleDto(Flow flow) {
+        return FlowDto.builder()
                 .id(flow.getId())
                 .name(flow.getName())
                 .description(flow.getDescription())
