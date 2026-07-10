@@ -1,14 +1,15 @@
 package com.api.pathwise.service;
 
-import com.api.pathwise.dto.flows.CreateFlowRequest;
-import com.api.pathwise.dto.flows.FlowResponse;
-import com.api.pathwise.dto.flows.UpdateFlowRequest;
+import com.api.pathwise.dto.flows.CreateFlowDto;
+import com.api.pathwise.dto.flows.FlowDto;
+import com.api.pathwise.dto.flows.UpdateFlowDto;
 import com.api.pathwise.entity.Flow;
 import com.api.pathwise.exception.ResourceNotFoundException;
 import com.api.pathwise.mapper.FlowMapper;
 import com.api.pathwise.repository.FlowRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,19 @@ public class FlowService {
     private final FlowRepository flowRepository;
     private final FlowMapper flowMapper;
 
-    public Page<FlowResponse> getAll(String searchTerm, Pageable pageable) {
+    public Page<FlowDto> getAll(String searchTerm, Pageable pageable) {
         return flowRepository.findAllWithPagination(searchTerm, pageable)
                 .map(flowMapper::toSimpleDto);
     }
 
-    public FlowResponse getById(Long id) {
-        Flow flowFromDb = flowRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
+    public FlowDto getById(Long id) {
+        Flow flowFromDb = getFlowFromDb(id);
         return flowMapper.toSimpleDto(flowFromDb) ;
     }
 
-    public FlowResponse create(CreateFlowRequest request) {
+
+
+    public FlowDto create(CreateFlowDto request) {
 
         Flow flow = new Flow();
         flow.setName(request.getName());
@@ -42,9 +44,8 @@ public class FlowService {
         return flowMapper.toSimpleDto(flow);
     }
 
-    public FlowResponse update(Long id, UpdateFlowRequest request) {
-        Flow flowFromDb = flowRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Flow not found with id: " + id));
+    public FlowDto update(Long id, UpdateFlowDto request) {
+        Flow flowFromDb = getFlowFromDb(id);
 
         flowFromDb.setName(request.getName());
         flowFromDb.setDescription(request.getDescription());
@@ -54,5 +55,11 @@ public class FlowService {
     }
 
 
+    // Get Flow from DB by its ID
+
+    public @NonNull Flow getFlowFromDb(Long id) {
+        return flowRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
+    }
 
 }
