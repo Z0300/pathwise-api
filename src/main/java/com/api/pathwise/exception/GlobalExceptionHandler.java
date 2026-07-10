@@ -4,6 +4,7 @@ import com.api.pathwise.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +50,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse.Error> handleAuthentication(AuthenticationException ex) {
         return error(HttpStatus.UNAUTHORIZED, "Invalid email or password", "INVALID_CREDENTIALS");
     }
+
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse.Error> handleUnreadableBody(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getCause();
+
+        if (cause instanceof InvalidFormatException ife && ife.getTargetType().isEnum()) {
+            String message = String.format(
+                    "Invalid value '%s'. Accepted values: %s",
+                    ife.getValue(),
+                    Arrays.toString(ife.getTargetType().getEnumConstants())
+            );
+            return error(HttpStatus.BAD_REQUEST, message, "INVALID_ENUM_VALUE");
+        }
+
+        return error(HttpStatus.BAD_REQUEST, "Malformed JSON request body", "INVALID_REQUEST_BODY");
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse.Error> handleValidation(MethodArgumentNotValidException ex) {

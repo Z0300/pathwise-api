@@ -1,6 +1,6 @@
 package com.api.pathwise.entity;
 
-import com.api.pathwise.entity.enumeration.NodeType;
+import com.api.pathwise.dto.NodeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class FlowNode {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flow_id")
-    private Flow flowId;
+    private Flow flow;
 
     @Column(name = "node_key")
     private String nodeKey;
