@@ -10,6 +10,7 @@ import com.api.pathwise.mapper.EnumeratedPathMapper;
 import com.api.pathwise.repository.EnumeratedPathRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,10 @@ public class EnumeratedPathService {
     }
 
     public EnumPathDto getById(Long id) {
-        EnumeratedPath pathFromDb = enumeratedPathRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
-
+        EnumeratedPath pathFromDb = getEnumeratedPath(id);
         return enumeratedPathMapper.toSimpleDto(pathFromDb);
     }
+
 
     public EnumPathDto create(CreateEnumPathDto request) {
 
@@ -42,7 +42,6 @@ public class EnumeratedPathService {
         EnumeratedPath enumeratedPath = new EnumeratedPath();
         enumeratedPath.setFlow(flowRef);
         enumeratedPath.setPathSequence(request.getPathSequence());
-
         enumeratedPathRepository.save(enumeratedPath);
 
         return enumeratedPathMapper.toSimpleDto(enumeratedPath);
@@ -50,17 +49,21 @@ public class EnumeratedPathService {
 
     public EnumPathDto update(Long id, UpdateEnumPathDto request) {
 
-        EnumeratedPath enumeratedPathFromDb = enumeratedPathRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Path step not found with id: " + id));
-
+        EnumeratedPath pathFromDb = getEnumeratedPath(id);
         Flow flowRef = flowService.getFlowFromDb(request.getFlowId());
 
-        enumeratedPathFromDb.setFlow(flowRef);
-        enumeratedPathFromDb.setPathSequence(request.getPathSequence());
+        pathFromDb.setFlow(flowRef);
+        pathFromDb.setPathSequence(request.getPathSequence());
 
-        enumeratedPathRepository.save(enumeratedPathFromDb);
+        enumeratedPathRepository.save(pathFromDb);
 
-        return enumeratedPathMapper.toSimpleDto(enumeratedPathFromDb);
+        return enumeratedPathMapper.toSimpleDto(pathFromDb);
+    }
+
+
+    public @NonNull EnumeratedPath getEnumeratedPath(Long id) {
+        return enumeratedPathRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
     }
 
 }
