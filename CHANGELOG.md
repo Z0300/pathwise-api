@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-07-12
+
+### Added
+- TestCase management API including Controller, Service, Repository, and DTOs.
+- `DuplicateResourceException` implementation with custom API error codes.
+- Validation constraints to FlowNode DTOs (`CreateFlowNodeDto`, `UpdateFlowNodeDto`).
+- FlowNode management API and DTO reorganization.
+
+### Changed
+- Updated `EnumeratedPathService` with better resource retrieval methods.
+- Refactored `TestCase` entity and related DTOs.
+- Improved global exception handling for duplicate resources.
+
 ## [0.1.1] - 2026-07-10
 
 ### Changed

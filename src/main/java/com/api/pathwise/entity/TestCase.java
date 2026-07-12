@@ -1,5 +1,6 @@
 package com.api.pathwise.entity;
 
+import com.api.pathwise.dto.TestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,13 +22,11 @@ public class TestCase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String name;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flow_id")
-    private Flow flowId;
+    @JoinColumn(name = "path_id")
+    private EnumeratedPath enumeratedPath;
 
     private String title;
 
@@ -40,5 +39,6 @@ public class TestCase {
     @Column(name = "expected_result")
     private String expectedResult;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TestStatus status;
 }
