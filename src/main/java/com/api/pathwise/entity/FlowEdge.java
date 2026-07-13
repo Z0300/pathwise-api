@@ -20,15 +20,15 @@ public class FlowEdge {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flow_id")
-    private Flow flowId;
+    private Flow flow;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_node_id")
-    private FlowNode fromNodeId;
+    private FlowNode fromNode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_node_id")
-    private FlowNode toNodeId;
+    private FlowNode toNode;
 
     @Column(name = "condition_label")
     private String conditionLabel;

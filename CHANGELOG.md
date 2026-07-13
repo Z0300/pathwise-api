@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-13
+
+### Added
+- FlowEdge management API including Controller, Service, Repository, Mapper, and DTOs.
+- `FlowEdgeDto`, `CreateFlowEdgeDto`, and `UpdateFlowEdgeDto` for edge operations.
+
+### Changed
+- Refactored `FlowEdge` entity fields for better naming consistency (`flow`, `fromNode`, `toNode`).
+- Renamed `FlowService.getFlowFromDb` to `FlowService.getFlow` for conciseness.
+- Exposed `FlowNodeService.getFlowNodeById` as public.
+- Updated `FlowNodeService` and `EnumeratedPathService` to use the new `getFlow` method.
+
 ## [0.2.0] - 2026-07-12
 
 ### Added

@@ -37,7 +37,7 @@ public class FlowNodeService {
 
     public FlowNodeDto create(CreateFlowNodeDto request) {
 
-        Flow flowRef = flowService.getFlowFromDb(request.getFlowId());
+        Flow flowRef = flowService.getFlow(request.getFlowId());
 
         FlowNode flowNode = new FlowNode();
         flowNode.setFlow(flowRef);
@@ -52,7 +52,7 @@ public class FlowNodeService {
     public FlowNodeDto update(Long id, UpdateFlowNodeDto request) {
         FlowNode flowNode = getFlowNodeById(id);
 
-        Flow flowRef = flowService.getFlowFromDb(request.getFlowId());
+        Flow flowRef = flowService.getFlow(request.getFlowId());
 
         flowNode.setFlow(flowRef);
         flowNode.setNodeKey(request.getNodeKey());
@@ -63,7 +63,7 @@ public class FlowNodeService {
         return flowNodeMapper.toSimpleDto(flowNode);
     }
 
-    private @NonNull FlowNode getFlowNodeById(Long id) {
+    public @NonNull FlowNode getFlowNodeById(Long id) {
         return flowNodeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
     }
