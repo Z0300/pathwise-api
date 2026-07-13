@@ -28,7 +28,7 @@ public class FlowService {
     }
 
     public FlowDto getById(Long id) {
-        Flow flowFromDb = getFlowFromDb(id);
+        Flow flowFromDb = getFlow(id);
         return flowMapper.toSimpleDto(flowFromDb) ;
     }
 
@@ -45,7 +45,7 @@ public class FlowService {
     }
 
     public FlowDto update(Long id, UpdateFlowDto request) {
-        Flow flowFromDb = getFlowFromDb(id);
+        Flow flowFromDb = getFlow(id);
 
         flowFromDb.setName(request.getName());
         flowFromDb.setDescription(request.getDescription());
@@ -57,7 +57,7 @@ public class FlowService {
 
     // Get Flow from DB by its ID
 
-    public @NonNull Flow getFlowFromDb(Long id) {
+    public @NonNull Flow getFlow(Long id) {
         return flowRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
     }

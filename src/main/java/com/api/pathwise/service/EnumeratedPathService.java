@@ -37,7 +37,7 @@ public class EnumeratedPathService {
 
     public EnumPathDto create(CreateEnumPathDto request) {
 
-        Flow flowRef = flowService.getFlowFromDb(request.getFlowId());
+        Flow flowRef = flowService.getFlow(request.getFlowId());
 
         EnumeratedPath enumeratedPath = new EnumeratedPath();
         enumeratedPath.setFlow(flowRef);
@@ -50,7 +50,7 @@ public class EnumeratedPathService {
     public EnumPathDto update(Long id, UpdateEnumPathDto request) {
 
         EnumeratedPath pathFromDb = getEnumeratedPath(id);
-        Flow flowRef = flowService.getFlowFromDb(request.getFlowId());
+        Flow flowRef = flowService.getFlow(request.getFlowId());
 
         pathFromDb.setFlow(flowRef);
         pathFromDb.setPathSequence(request.getPathSequence());
