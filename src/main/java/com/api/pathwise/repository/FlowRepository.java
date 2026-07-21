@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface FlowRepository extends JpaRepository<Flow, Long> {
 
-    @Query("SELECT f FROM Flow f WHERE f.name LIKE %:searchTerm%")
+    @Query("SELECT f FROM Flow f WHERE (:searchTerm IS NULL OR f.name LIKE %:searchTerm%)")
     Page<Flow> findAllWithPagination(
             @Param("searchTerm") String searchTerm,
             Pageable pageable
