@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-07-21
+
+### Added
+- Path enumeration engine in `PathEnumeratorService` using DFS to find all valid paths from Start to End nodes.
+- New endpoints in `FlowController`:
+    - `POST /api/v1/flows/{flowId}/enumerate`: Triggers path discovery and persistence.
+    - `GET /api/v1/flows/{flowId}/nodes`: Retrieves all nodes belonging to a specific flow.
+- Configurable CORS support in `SecurityConfig` via `app.cors.allowed-origins`.
+- Repository methods for retrieving edges by flow and nodes by type/flow.
+
+### Changed
+- Migrated application configuration files from `.yaml` to `.yml` extension.
+- Updated `pom.xml` with project metadata and dependencies.
+- Enhanced `FlowNodeService` with node retrieval by flow and type.
+- Updated `.gitignore` to exclude `.env` and environment-specific configs.
+
 ## [0.3.0] - 2026-07-13
 
 ### Added

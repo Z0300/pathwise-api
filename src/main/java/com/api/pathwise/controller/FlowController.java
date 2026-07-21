@@ -1,10 +1,18 @@
 package com.api.pathwise.controller;
 
 import com.api.pathwise.dto.ApiResponse;
+import com.api.pathwise.dto.enumpath.EnumPathDto;
 import com.api.pathwise.dto.flow.CreateFlowDto;
 import com.api.pathwise.dto.flow.FlowDto;
 import com.api.pathwise.dto.flow.UpdateFlowDto;
+import com.api.pathwise.dto.flownode.FlowNodeDto;
+import com.api.pathwise.entity.EnumeratedPath;
+import com.api.pathwise.entity.FlowNode;
+import com.api.pathwise.mapper.EnumeratedPathMapper;
+import com.api.pathwise.mapper.FlowNodeMapper;
+import com.api.pathwise.service.FlowNodeService;
 import com.api.pathwise.service.FlowService;
+import com.api.pathwise.service.PathEnumeratorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,10 +30,16 @@ public class FlowController {
 
     private final FlowService flowService;
 
+    private final FlowNodeService flowNodeService;
+    private final FlowNodeMapper flowNodeMapper;
+
+    private final PathEnumeratorService pathEnumeratorService;
+    private final EnumeratedPathMapper enumeratedPathMapper;
+
     @GetMapping
     public ResponseEntity<ApiResponse.Success<List<FlowDto>>> getAll(
-           @RequestParam(required = false) String searchTerm,
-           Pageable pageable) {
+            @RequestParam(required = false) String searchTerm,
+            Pageable pageable) {
 
         Page<FlowDto> page = flowService.getAll(searchTerm, pageable);
 
@@ -72,6 +86,28 @@ public class FlowController {
                         .build());
     }
 
+    // Flow enumeration
 
+    @PostMapping("/{flowId}/enumerate")
+    public ResponseEntity<ApiResponse.Success<List<EnumPathDto>>> enumerate(@PathVariable Long flowId) {
+        List<EnumeratedPath> paths = pathEnumeratorService.enumerateAndSave(flowId);
+        List<EnumPathDto> enumPathDto = paths.stream().map(enumeratedPathMapper::toSimpleDto).toList();
+        return ResponseEntity.ok(ApiResponse.Success.<List<EnumPathDto>>builder()
+                .success(true)
+                .data(enumPathDto)
+                .build());
+    }
+
+    // Flow nodes
+
+    @GetMapping("/{flowId}/nodes")
+    public ResponseEntity<ApiResponse.Success<List<FlowNodeDto>>> getByFlow(@PathVariable Long flowId) {
+        List<FlowNode> nodes = flowNodeService.getNodesByFlowId(flowId);
+        List<FlowNodeDto> flowNodeDto = nodes.stream().map(flowNodeMapper::toSimpleDto).toList();
+        return ResponseEntity.ok(ApiResponse.Success.<List<FlowNodeDto>>builder()
+                .success(true)
+                .data(flowNodeDto)
+                .build());
+    }
 
 }

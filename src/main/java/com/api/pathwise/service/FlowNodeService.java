@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,9 @@ public class FlowNodeService {
     private final FlowNodeMapper flowNodeMapper;
     private final FlowService flowService;
 
+    public List<FlowNode> getNodesByFlowId(Long flowId) {
+        return flowNodeRepository.findByFlow_Id(flowId);
+    }
 
     public Page<FlowNodeDto> getAll(Pageable pageable) {
         return flowNodeRepository.findAll(pageable)
